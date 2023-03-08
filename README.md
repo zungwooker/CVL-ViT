@@ -5,7 +5,7 @@ Mar. 2022 ~ Present
 
 ## Structure
 ```
-📂 project/
+📂 VVS-ViT/
 ├── 📂 dataset/
 │   ├── 📂 data_law/
 │   |	├── 📂 None-crash/
@@ -66,19 +66,38 @@ Mar. 2022 ~ Present
 │   |
 │   └── 📄 TS_HDD_03_Lidar_ViT.xlsx
 |
-├── src/
-│   ├── main.py
-│   ├── utils.py
+├── 📂 model/
+│   ├── 🤖 model.pt
 │   └── ...
 │
-├── docs/
-│   ├── README.md
-│   ├── LICENSE
+├── 📂 scripts/
+│   ├── 📂 attention_rollout/
+│   ├── 📂 model_train/
+│   ├── 📂 pcd_preprocessor/
+│   ├── 📂 unzipers/
 │   └── ...
 │
 └── ...
 ```
+* All codes are in `script` folder.
+* Data should be prepared before run the codes.
+* We do not provide dataset.
 
 ## Required Libraries
 
+Writing...
+
 ## Usage
+
+1. Place PCD zip files in `dataset/data_law/None-crash` and `dataset/data_law/Vulner`. Drives are should be separated by labels.
+2. Prepare `TS_HDD_03_Lidar_ViT.xlsx` file with pcd information organized and place it in `dataset/`
+3. Run `unzipers/unzip_drives.py`. It unzips your zipped law data based on `TS_HDD_03_Lidar_ViT.xlsx`. 
+	> `unzip_drives.py` optionally unzips data from vulnerable drives because not all the PCD files are vulnerable situation in the drives.
+4. Run `pcd_preprocessor/lidar_extractor{latest version}.py`. It preprocesses PCD files to pickle files for training VVS-ViT.
+5. Run `model_train/data_split.ipynb`. It splits dataset into `train`,`valid`, `test` and save the files path as `.pickle`.
+6. Run `model_train/vit_tune.ipynb` to train a new model and save it. You can also check out confusion matrix with test dataset.
+7. Now you are ready for attention rollout. Run the `.ipynb` in `attention_rollout` according to the required operation.
+
+## Reference
+1. https://github.com/lucidrains/vit-pytorch
+2. https://github.com/jacobgil/vit-explain
