@@ -1,4 +1,3 @@
-# Updated 2022-10-26 14:10
 import argparse
 import torch
 import numpy as np
@@ -12,7 +11,6 @@ from vit_grad_rollout import VITAttentionGradRollout
 
 # Path settings
 PATH_model = "../../model/model.pt"
-PATH_data = "../../dataset/data_preprocessed/Vulner/21-12-01-11-41-59_end_extract_drive8/00287.pickle"
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -35,6 +33,7 @@ def get_args():
         print("Using CPU")
 
     return args
+
 
 def show_mask(mask):
     heatmap = cv2.applyColorMap(np.uint8(255 * mask), cv2.COLORMAP_JET)
@@ -142,7 +141,7 @@ def save_points_with_attention_and_number(mask_matched_to_voxel, input_points, n
     plt.close()
 
 
-def save_points_only(input_points, name):
+def save_points_only(input_points, name, PATH_save):
     plt.figure(figsize=(24,20))
 
     plt.xticks(np.arange(-42,42,3))
@@ -166,97 +165,8 @@ def save_points_only(input_points, name):
     plt.scatter(y_coor, x_coor, marker='o', s=0.05)
     
     plt.gca().invert_yaxis()
-    plt.savefig(name + '.png')
+    plt.savefig(PATH_save + '/' + name + '.png')
     plt.close()
-
-
-def mask_for_sample1(mask_matched_to_voxel):
-    # WARNING: HARD CODE
-    # y: 12, 13
-    # x: all(y:12), 0~12, 15~27(y:13)
-
-    masked_mask = mask_matched_to_voxel
-    for x in range(0, 28):
-        masked_mask[x][12] = 0
-
-    for x in range(0, 13):
-        masked_mask[x][13] = 0
-
-    for x in range(15, 28):
-        masked_mask[x][13] = 0
-
-    return masked_mask
-
-
-def mask_for_sample2(mask_matched_to_voxel):
-    # WARNING: HARD CODE
-    # y: 9
-
-    masked_mask = mask_matched_to_voxel
-    for x in range(0, 28):
-        masked_mask[x][9] = 0
-
-    return masked_mask
-
-
-def mask_for_sample3(mask_matched_to_voxel):
-    # WARNING: HARD CODE
-    # y: 9
-
-    masked_mask = mask_matched_to_voxel
-    for x in range(0, 28):
-        masked_mask[x][9] = 0
-
-    return masked_mask
-
-
-def mask_for_sample4(mask_matched_to_voxel):
-    # WARNING: HARD CODE
-    # y: 9
-
-    masked_mask = mask_matched_to_voxel
-    for x in range(0, 28):
-        masked_mask[x][9] = 0
-
-    return masked_mask
-
-
-def mask_for_sample_custom(mask_matched_to_voxel):
-    # WARNING: HARD CODE
-
-    masked_mask = mask_matched_to_voxel
-    # for x in range(0, 28):
-    #     for i in range(0, 28):
-    #         masked_mask[x][i] = masked_mask[x][i] * 0.2
-
-    # for x in range(12, 16):
-    #     for i in range(12, 16):
-    #         masked_mask[x][i] = masked_mask[x][i] * 2
-
-    # # 이고 도로 뒤
-    # for x in range(16, 28):
-    #     for i in range(12, 18):
-    #         masked_mask[x][i] = masked_mask[x][i] * 0.2
-
-    # for x in range(0, 12):
-    #     for i in range(12, 14):
-    #         masked_mask[x][i] = masked_mask[x][i] * 0.1
-
-    # for x in range(14, 28):
-    #     for i in range(12, 14):
-    #         masked_mask[x][i] = masked_mask[x][i] * 0.1
-
-    # masked_mask[12][14] = masked_mask[12][14] * 0.2
-    # masked_mask[12][15] = masked_mask[12][15] * 0.2
-    # masked_mask[13][14] = masked_mask[13][14] * 0.2
-    # masked_mask[13][15] = masked_mask[13][15] * 0.2
-
-    # masked_mask[18][14] = masked_mask[18][14] * 0.2
-    # masked_mask[18][15] = masked_mask[18][15] * 0.2
-    # masked_mask[19][14] = masked_mask[19][14] * 0.2
-    # masked_mask[19][15] = masked_mask[19][15] * 0.2
-
-    return masked_mask
 
 
 def draw_img(model, PATH_data):
@@ -284,7 +194,7 @@ def draw_img(model, PATH_data):
     save_points_with_attention(mask_matched_to_voxel, input_points, name)
 
 
-def draw_img_lidar_only(model, PATH_data):
+def draw_img_lidar_only(PATH_data, PATH_save):
     # Load data: using CPU
     with open(PATH_data, 'rb') as f:
         data = pickle.load(f)
@@ -295,85 +205,7 @@ def draw_img_lidar_only(model, PATH_data):
     name = PATH_data.split('/')[-1].split('\\')[0] + '_' + PATH_data.split('/')[-1].split('\\')[1].split('.')[0] + '_lidar'
 
     # Draw pcd and attentions and save it
-    save_points_only(input_points, name)
-
-
-def draw_img_sample1(model, PATH_data):
-    # Load data: using CPU
-    with open(PATH_data, 'rb') as f:
-        data = pickle.load(f)
-
-    input_tensor = data['tensor']
-    input_points = data['feature_map']['points']
-
-    input_tensor = input_tensor.reshape((1,14,28,28))
-    input_tensor = input_tensor.to(torch.float32).cpu()
-
-    # Rollout attentions
-    attention_rollout = VITAttentionRollout(model, head_fusion='max', discard_ratio=0.9)
-    mask_law = attention_rollout(input_tensor) # (14, 14)
-    
-    # Match mask to OS
-    mask_matched_to_voxel = match_mask_to_voxel(mask=mask_law, patch_size=2)
-    mask_matched_to_voxel = mask_for_sample1(mask_matched_to_voxel)
-
-    # name image(ex. 21-12-01-11-41-59_end_extract_drive8_00287)
-    name = PATH_data.split('/')[-1].split('\\')[0] + '_' + PATH_data.split('/')[-1].split('\\')[1].split('.')[0]
-
-    # Draw pcd and attentions and save it
-    save_points_with_attention(mask_matched_to_voxel, input_points, name)
-
-
-def draw_img_sample2(model, PATH_data):
-    # Load data: using CPU
-    with open(PATH_data, 'rb') as f:
-        data = pickle.load(f)
-
-    input_tensor = data['tensor']
-    input_points = data['feature_map']['points']
-
-    input_tensor = input_tensor.reshape((1,14,28,28))
-    input_tensor = input_tensor.to(torch.float32).cpu()
-
-    # Rollout attentions
-    attention_rollout = VITAttentionRollout(model, head_fusion='max', discard_ratio=0.9)
-    mask_law = attention_rollout(input_tensor) # (14, 14)
-    
-    # Match mask to OS
-    mask_matched_to_voxel = match_mask_to_voxel(mask=mask_law, patch_size=2)
-    mask_matched_to_voxel = mask_for_sample2(mask_matched_to_voxel)
-
-    # name image(ex. 21-12-01-11-41-59_end_extract_drive8_00287)
-    name = PATH_data.split('/')[-1].split('\\')[0] + '_' + PATH_data.split('/')[-1].split('\\')[1].split('.')[0]
-
-    # Draw pcd and attentions and save it
-    save_points_with_attention(mask_matched_to_voxel, input_points, name)
-
-
-def draw_img_sample3(model, PATH_data):
-    # Load data: using CPU
-    with open(PATH_data, 'rb') as f:
-        data = pickle.load(f)
-
-    input_tensor = data['tensor']
-    input_points = data['feature_map']['points']
-
-    input_tensor = input_tensor.reshape((1,14,28,28))
-    input_tensor = input_tensor.to(torch.float32).cpu()
-
-    # Rollout attentions
-    attention_rollout = VITAttentionRollout(model, head_fusion='max', discard_ratio=0.9)
-    mask_law = attention_rollout(input_tensor) # (14, 14)
-    
-    # Match mask to OS
-    mask_matched_to_voxel = match_mask_to_voxel(mask=mask_law, patch_size=2)
-    mask_matched_to_voxel = mask_for_sample3(mask_matched_to_voxel)
-
-    # name image(ex. 21-12-01-11-41-59_end_extract_drive8_00287)
-    name = PATH_data.split('/')[-1].split('\\')[0] + '_' + PATH_data.split('/')[-1].split('\\')[1].split('.')[0]
-
-    # Draw pcd and attentions and save it
-    save_points_with_attention(mask_matched_to_voxel, input_points, name)
+    save_points_only(input_points, name, PATH_save)
 
 
 def draw_img_sample_custom(model, PATH_data, label):
@@ -462,7 +294,6 @@ def draw_img_sample_custom(model, PATH_data, label):
     
     # Match mask to OS
     mask_matched_to_voxel = match_mask_to_voxel(mask=mask_law, patch_size=2)
-    mask_matched_to_voxel = mask_for_sample_custom(mask_matched_to_voxel)
 
     # Draw pcd and attentions and save it
     save_points_with_attention_and_number(mask_matched_to_voxel, input_points, name)

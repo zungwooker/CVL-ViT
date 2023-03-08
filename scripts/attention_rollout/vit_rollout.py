@@ -34,7 +34,7 @@ def rollout(attentions, discard_ratio, head_fusion):
     # In case of 224x224 image, this brings us from 196 to 14
     width = int(mask.size(-1)**0.5)
     mask = mask.reshape(width, width).numpy()
-    mask = mask / np.max(mask)
+    # mask = mask / np.max(mask)
     return mask
 
 class VITAttentionRollout:
