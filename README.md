@@ -88,7 +88,7 @@ Writing...
 
 ## Usage
 
-1. Place PCD zip files in `dataset/data_law/None-crash` and `dataset/data_law/Vulner`. Drives are should be separated by labels.
+1. Place PCD zip files in `dataset/data_law/None-crash/` and `dataset/data_law/Vulner/`. Drives are should be separated by labels.
 2. Prepare `TS_HDD_03_Lidar_ViT.xlsx` file with pcd information organized and place it in `dataset/`
 3. Run `unzippers/unzip_drives.py`. It unzips your zipped law data based on `TS_HDD_03_Lidar_ViT.xlsx`. 
 	> `unzip_drives.py` optionally unzips data from vulnerable drives because not all the PCD files are vulnerable situation in the drives.
