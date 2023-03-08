@@ -1,6 +1,6 @@
 # README
 
-**Vulnerable Voxel Space(VVS) and Vision Transformer (ViT)**
+**Vulnerable Voxel Space(VVS) and Vision Transformer (ViT)**    
 Mar. 2022 ~ Present
 
 ## Structure
@@ -79,7 +79,7 @@ Mar. 2022 ~ Present
 │
 └── ...
 ```
-* All codes are in `script` folder.
+* All codes are in `scripts` folder.
 * Data should be prepared before run the codes.
 * We do not provide dataset.
 
@@ -94,9 +94,9 @@ Writing...
 3. Run `unzipers/unzip_drives.py`. It unzips your zipped law data based on `TS_HDD_03_Lidar_ViT.xlsx`. 
 	> `unzip_drives.py` optionally unzips data from vulnerable drives because not all the PCD files are vulnerable situation in the drives.
 4. Run `pcd_preprocessor/lidar_extractor{latest version}.py`. It preprocesses PCD files to pickle files for training VVS-ViT.
-5. Run `model_train/data_split.ipynb`. It splits dataset into `train`,`valid`, `test` and save the files path as `.pickle`.
+5. Run `model_train/data_split.ipynb`. It splits dataset into `train`, `valid`, `test` and save the files path as `.pickle`.
 6. Run `model_train/vit_tune.ipynb` to train a new model and save it. You can also check out confusion matrix with test dataset.
-7. Now you are ready for attention rollout. Run the `.ipynb` in `attention_rollout` according to the required operation.
+7. Now you are ready for attention rollout. Run the `.ipynb` in `attention_rollout/` according to the required operation.
 
 ## Reference
 1. https://github.com/lucidrains/vit-pytorch
