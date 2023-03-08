@@ -1,6 +1,6 @@
 # README
 
-**Vulnerable Voxel Space(VVS) and Vision Transformer (ViT)**    
+**Vulnerable Voxel Space(VVS) and Vision Transformer(ViT)**    
 Mar. 2022 ~ Present
 
 ## Structure
