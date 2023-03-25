@@ -48,6 +48,9 @@ def unzip_Vulner(PATH_excel, PATH_Vulner):
                     sheet_name= 'TS_HDD_03', 
                     usecols= [13, 14, 21, 28, 29]
                     )
+    
+    df.to_csv('tmp.csv')
+    exit()
 
     # 조건을 만족하는 행만 추출
     # 1. 학습용 구분: Vulnerable

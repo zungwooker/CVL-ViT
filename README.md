@@ -88,11 +88,13 @@ Writing...
 
 ## Usage
 
-1. Place PCD zip files in `dataset/data_law/None-crash` and `dataset/data_law/Vulner`. Drives are should be separated by labels.
+1. Place PCD zip files in `dataset/data_law/None-crash/` and `dataset/data_law/Vulner`. Drives are should be separated by labels.
 2. Prepare `TS_HDD_03_Lidar_ViT.xlsx` file with pcd information organized and place it in `dataset/`
 3. Run `unzippers/unzip_drives.py`. It unzips your zipped law data based on `TS_HDD_03_Lidar_ViT.xlsx`. 
 	> `unzip_drives.py` optionally unzips data from vulnerable drives because not all the PCD files are vulnerable situation in the drives.
 4. Run `pcd_preprocessor/lidar_extractor{latest version}.py`. It preprocesses PCD files to pickle files for training VVS-ViT.
+	* `4.2v`: Set centroid of empty voxel as (0, 0, 0)
+	* `5.0v`: Set centroid of empty voxel to the voxel's center coordinate.
 5. Run `model_train/data_split.ipynb`. It splits dataset into `train`, `valid`, `test` and save the files path as `.pickle`.
 6. Run `model_train/vit_tune.ipynb` to train a new model and save it. You can also check out confusion matrix with test dataset.
 7. Now you are ready for attention rollout. Run the `.ipynb` in `attention_rollout/` according to the required operation.
