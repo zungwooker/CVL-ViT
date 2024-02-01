@@ -1,5 +1,5 @@
-# Critical voxel learning with vision transformer and derivation of logical AV safety assessment scenarios  
-** Mar. 2022 ~ Nov. 2022 **
+# Critical voxel learning with vision transformer and derivation of logical AV safety assessment scenarios
+**Mar. 2022 ~ Nov. 2022**
 
 ## Structure
 ```
