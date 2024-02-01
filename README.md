@@ -1,7 +1,7 @@
 # README
 
 **Vulnerable Voxel Space(VVS) and Vision Transformer(ViT)**    
-Mar. 2022 ~ Present
+Mar. 2022 ~ Nov. 2022
 
 ## Structure
 ```
@@ -81,10 +81,6 @@ Mar. 2022 ~ Present
 * All codes are in `scripts` folder.
 * Data should be prepared before run the codes.
 * We do not provide dataset.
-
-## Required Libraries
-
-Writing...
 
 ## Usage
 
