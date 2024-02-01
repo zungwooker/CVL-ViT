@@ -95,6 +95,6 @@ Mar. 2022 ~ Nov. 2022
 6. Run `model_train/vit_tune.ipynb` to train a new model and save it. You can also check out confusion matrix with test dataset.
 7. Now you are ready for attention rollout. Run the `.ipynb` in `attention_rollout/` according to the required operation.
 
-## Reference
+## References
 1. https://github.com/lucidrains/vit-pytorch
 2. https://github.com/jacobgil/vit-explain
